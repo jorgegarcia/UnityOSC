@@ -1,6 +1,28 @@
-UnityOSC
+-------------------------UnityOSC v1.0
 
-Open Sound Control classes and interface for Unity 3D game engine
+Open Sound Control classes and 
+API for the Unity 3d game engine
+
+---------------------------------------------
 
 Author: Jorge Garcia [jorge.garcia03@estudiant.upf.edu]
 
+Acknowledgements:
+
+Stefan Kersten [stefan.kersten@upf.edu], for reviewing the code and the API
+This library includes portions of code from the Bespoke OSC library by Paul Varcholik [pvarchol@bespokesoftware.org]
+
+* Documentation
+
+	docs/doxygen/html/index.html		doxygen generated html reference
+	docs/UnityOSC_manual.pdf		main reference and examples of usage
+
+* Source code
+
+	src/OSCHandler.cs
+	src/UnityOSC/OSCBundle.cs
+	src/UnityOSC/OSCClient.cs
+	src/UnityOSC/OSCMessage.cs
+	src/UnityOSC/OSCPacket.cs
+	src/UnityOSC/OSCServer.cs
+	src/Editor/OSCHelper.cs
