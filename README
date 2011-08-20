@@ -1,4 +1,4 @@
--------------------------UnityOSC v1.0
+UnityOSC v1.0 -------------------------
 
 Open Sound Control classes and 
 API for the Unity 3d game engine
@@ -7,9 +7,7 @@ API for the Unity 3d game engine
 
 Author: Jorge Garcia [jorge.garcia03@estudiant.upf.edu]
 
-Acknowledgements:
-
-Stefan Kersten [stefan.kersten@upf.edu], for reviewing the code and the API
+Acknowledgements: Stefan Kersten [stefan.kersten@upf.edu], for reviewing the code and the API. 
 This library includes portions of code from the Bespoke OSC library by Paul Varcholik [pvarchol@bespokesoftware.org]
 
 * Documentation
@@ -26,3 +24,10 @@ This library includes portions of code from the Bespoke OSC library by Paul Varc
 	src/UnityOSC/OSCPacket.cs
 	src/UnityOSC/OSCServer.cs
 	src/Editor/OSCHelper.cs
+	
+* TODO
+
+	- Unit tests.
+	- Change string concatenations to C# string builders.
+	- Upload test scripts.
+	- Review exception handling for uninitialized client/servers.
