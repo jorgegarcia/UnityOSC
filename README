@@ -32,5 +32,5 @@ TODO
 	
 Known issues
 
-* Since blundle information is not implemented fully, receiving messages in Unity fails while using bundle information (e.g. when sending OSC from OpenFrameworks with ofxOSC)
+* Since bundle information is not implemented fully, receiving messages in Unity fails while using bundles (e.g. when sending OSC from OpenFrameworks with ofxOSC)
 	
