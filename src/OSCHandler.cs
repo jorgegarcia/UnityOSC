@@ -91,14 +91,13 @@ public class OSCHandler : MonoBehaviour
 	/// </summary>
 	public void Init()
 	{
+        //Initialize OSC servers (listeners)
+        //Example:
+        //CreateServer("main", 12345);	
+
 		//Initialize OSC clients (transmitters)
 		//Example:		
-		//CreateClient("SuperCollider", IPAddress.Parse("127.0.0.1"), 5555);
-		
-		//Initialize OSC servers (listeners)
-		//Example:
-		
-		//CreateServer("AndroidPhone", 6666);		
+		//CreateClient("ofxOSC", IPAddress.Parse("10.10.0.33"), 12345);
 	}
 	
 	#region Properties
@@ -185,13 +184,20 @@ public class OSCHandler : MonoBehaviour
 	/// </param>
 	public void CreateServer(string serverId, int port)
 	{
-		ServerLog serveritem = new ServerLog();
-		serveritem.server = new OSCServer(port);
+        OSCServer server = new OSCServer(port);
+        server.PacketReceivedEvent += OnPacketReceived;
+
+        ServerLog serveritem = new ServerLog();
+        serveritem.server = server;
 		serveritem.log = new List<string>();
 		serveritem.packets = new List<OSCPacket>();
 		
 		_servers.Add(serverId, serveritem);
 	}
+
+    void OnPacketReceived(OSCServer server, OSCPacket packet)
+    {
+    }
 	
 	/// <summary>
 	/// Sends an OSC message to a specified client, given its clientId (defined at the OSC client construction),
