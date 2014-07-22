@@ -1,8 +1,7 @@
-UnityOSC v1.1 October 2012 ------------
+UnityOSC v1.2 July 2014
 
 Open Sound Control classes and 
 API for the Unity 3d game engine
-
 ---------------------------------------
 
 Author: Jorge Garcia [info@jorgegarciamartin.com]
@@ -26,11 +25,4 @@ Source code
 	
 TODO
 
-	10.12 Implement bundle packet information
 	07.11 Change string concatenations to C# string builders.
-	07.11 Review exception handling for uninitialized client/servers.
-	
-Known issues
-
-* Since bundle information is not implemented fully, receiving messages in Unity fails while using bundles (e.g. when sending OSC from OpenFrameworks with ofxOSC)
-	
