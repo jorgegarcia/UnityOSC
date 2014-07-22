@@ -289,8 +289,12 @@ namespace UnityOSC
 		/// </returns>
 		public static OSCPacket Unpack(byte[] data, ref int start, int end)
 		{
-			if(data[0] == '#') return OSCBundle.Unpack(data, ref start, end);
-			else return OSCMessage.Unpack(data, ref start);
+            if (data[start] == '#')
+            {
+                return OSCBundle.Unpack(data, ref start, end);
+            }
+
+            else return OSCMessage.Unpack(data, ref start);
 		}		
 		
 		/// <summary>

@@ -26,14 +26,22 @@ using System.Collections.Generic;
 
 namespace UnityOSC
 {
+    public delegate void PacketReceivedEventHandler(OSCServer sender, OSCPacket packet);
+
 	/// <summary>
 	/// Receives incoming OSC messages
 	/// </summary>
 	public class OSCServer
-	{
-		#region Constructors
-		public OSCServer (int localPort)
+    {
+        #region Delegates
+        public event PacketReceivedEventHandler PacketReceivedEvent;
+        #endregion
+
+        #region Constructors
+        public OSCServer (int localPort)
 		{
+            PacketReceivedEvent += delegate(OSCServer s, OSCPacket p) { };
+
 			_localPort = localPort;
 			Connect();
 		}
@@ -95,9 +103,9 @@ namespace UnityOSC
 				_receiverThread = new Thread(new ThreadStart(this.ReceivePool));
 				_receiverThread.Start();
 			}
-			catch
+			catch(Exception e)
 			{
-				throw new Exception(String.Format("Can't create server at port {0}", _localPort));
+				throw e;
 			}
 		}
 		
@@ -112,13 +120,12 @@ namespace UnityOSC
 			_udpClient = null;
 		}
 		
+
 		/// <summary>
 		/// Receives and unpacks an OSC packet.
+        /// A <see cref="OSCPacket"/>
 		/// </summary>
-		/// <returns>
-		/// A <see cref="OSCPacket"/>
-		/// </returns>
-		private OSCPacket Receive()
+		private void Receive()
 		{
 			IPEndPoint ip = null;
 			
@@ -128,15 +135,16 @@ namespace UnityOSC
 
 				if(bytes != null && bytes.Length > 0)
 				{
-					return OSCPacket.Unpack(bytes);
+                    OSCPacket packet = OSCPacket.Unpack(bytes);
+
+                    _lastReceivedPacket = packet;
+
+                    PacketReceivedEvent(this, _lastReceivedPacket);	
 				}
 			}
-			catch
-			{
-				throw new Exception(String.Format("Can't unpack upcoming OSC data at port {0}", _localPort));
-			}
-			
-			return null;
+			catch{
+				throw new Exception(String.Format("Can't create server at port {0}", _localPort));
+  			}
 		}
 		
 		/// <summary>
@@ -144,10 +152,10 @@ namespace UnityOSC
 		/// </summary>
 		private void ReceivePool()
 		{
-			while(true)
+			while( true )
 			{
-				_lastReceivedPacket = Receive();
-				_lastReceivedPacket.TimeStamp = long.Parse(String.Concat(DateTime.Now.Ticks));
+				Receive();
+                Thread.Sleep(10);
 			}
 		}
 		#endregion
