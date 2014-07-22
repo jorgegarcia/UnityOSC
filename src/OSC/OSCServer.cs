@@ -52,7 +52,6 @@ namespace UnityOSC
 		private int _localPort;
 		private Thread _receiverThread;
 		private OSCPacket _lastReceivedPacket;
-        private bool _run;
 		#endregion
 		
 		#region Properties
@@ -100,7 +99,6 @@ namespace UnityOSC
 			
 			try
 			{
-                _run = true;
 				_udpClient = new UdpClient(_localPort);
 				_receiverThread = new Thread(new ThreadStart(this.ReceivePool));
 				_receiverThread.Start();
@@ -145,8 +143,8 @@ namespace UnityOSC
 				}
 			}
 			catch{
-				throw new Exception(String.Format("Can't unpack upcoming OSC data at port {0}", _localPort));
-			}
+				throw new Exception(String.Format("Can't create server at port {0}", _localPort));
+  			}
 		}
 		
 		/// <summary>
@@ -154,7 +152,7 @@ namespace UnityOSC
 		/// </summary>
 		private void ReceivePool()
 		{
-			while( _run )
+			while( true )
 			{
 				Receive();
                 Thread.Sleep(10);

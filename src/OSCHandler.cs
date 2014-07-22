@@ -91,13 +91,14 @@ public class OSCHandler : MonoBehaviour
 	/// </summary>
 	public void Init()
 	{
+        //Initialize OSC clients (transmitters)
+        //Example:		
+        //CreateClient("SuperCollider", IPAddress.Parse("127.0.0.1"), 5555);
+
         //Initialize OSC servers (listeners)
         //Example:
-        //CreateServer("main", 12345);	
 
-		//Initialize OSC clients (transmitters)
-		//Example:		
-		//CreateClient("ofxOSC", IPAddress.Parse("10.10.0.33"), 12345);
+        //CreateServer("AndroidPhone", 6666);
 	}
 	
 	#region Properties
