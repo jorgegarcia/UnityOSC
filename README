@@ -1,19 +1,14 @@
-UnityOSC v1.2 July 2014
+## UnityOSC v1.2. July 2014
 
-Open Sound Control classes and 
-API for the Unity 3d game engine
----------------------------------------
+** Open Sound Control classes and 
+API for the Unity 3d game engine **
 
-Author: Jorge Garcia [info@jorgegarciamartin.com]
-
-Acknowledgements: Stefan Kersten [stefan.kersten@upf.edu], for reviewing the code and the API. This library includes portions of code from the Bespoke OSC library by Paul Varcholik [pvarchol@bespokesoftware.org]
-
-Documentation
+## Documentation
 
 	docs/doxygen/html/index.html		doxygen generated html reference
 	docs/UnityOSC_manual.pdf		main reference and examples of usage
 
-Source code
+## Source code
 
 	src/OSCHandler.cs
 	src/UnityOSC/OSCBundle.cs
@@ -23,6 +18,6 @@ Source code
 	src/UnityOSC/OSCServer.cs
 	src/Editor/OSCHelper.cs
 	
-TODO
+## TODO
 
 	07.11 Change string concatenations to C# string builders.
