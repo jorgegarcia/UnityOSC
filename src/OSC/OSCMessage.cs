@@ -151,6 +151,11 @@ namespace UnityOSC
 				message.Append(value);
 			}
 
+			if(message.TimeStamp == 0)
+			{
+				message.TimeStamp = DateTime.Now.Ticks;
+			}
+
 			return message;
 		}
 		
