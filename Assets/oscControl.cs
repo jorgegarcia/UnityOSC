@@ -46,53 +46,54 @@ public class oscControl : MonoBehaviour {
 	void Update() {
 		
 		OSCHandler.Instance.UpdateLogs();
-		randVal = UnityEngine.Random.Range (0f, 0.7f);
+
 		msg="0.1544944";
 		byte[] val = new byte[]{176,8,0};
-		//if(UnityEngine.Random.value<0.01f)
-		//	OSCHandler.Instance.SendMessageToClient("TouchOSC Bridge", "192.168.1.5",values);
+
 		servers = OSCHandler.Instance.Servers;
 		clients = OSCHandler.Instance.Clients;
-
-		randVal = UnityEngine.Random.Range (0f, 0.7f);
-		if(UnityEngine.Random.value<0.01f)
-			OSCHandler.Instance.SendMessageToClient("TouchOSC Bridge","/1/fader5",randVal);
+		if (UnityEngine.Random.value < 0.01f) {
+			randVal = UnityEngine.Random.Range (0f, 0.7f);
+			OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "/1/fader1", randVal);
+			OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "/1/fader2", randVal);
+			OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "/1/fader3", randVal);
+			OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "/1/fader4", randVal);
+		}
 		OSCHandler.Instance.UpdateLogs();
 
-
-
-	    foreach( KeyValuePair<string, ServerLog> item in servers )
-		{
+		foreach (KeyValuePair<string, ServerLog> item in servers) {
 			// If we have received at least one packet,
 			// show the last received from the log in the Debug console
-			if(item.Value.log.Count > 0) 
-			{
+			if (item.Value.log.Count > 0) {
 				int lastPacketIndex = item.Value.packets.Count - 1;
-				
-				UnityEngine.Debug.Log(String.Format("SERVER: {0} ADDRESS: {1} VALUE : {2}", 
-				                                    item.Key, // Server name
-				                                    item.Value.packets[lastPacketIndex].Address, // OSC address
-				                                    item.Value.packets[lastPacketIndex].Data[0].ToString())); //First data value
-
+					
+				UnityEngine.Debug.Log (String.Format ("SERVER: {0} ADDRESS: {1} VALUE : {2}", 
+					                                    item.Key, // Server name
+					                                    item.Value.packets [lastPacketIndex].Address, // OSC address
+					                                    item.Value.packets [lastPacketIndex].Data [0].ToString ())); //First data value
+					
 				//converts the values into MIDI to scale the cube
-				float tempVal=float.Parse(item.Value.packets[lastPacketIndex].Data[0].ToString());
-				cube.transform.localScale=new Vector3(tempVal,tempVal,tempVal);
+				float tempVal = float.Parse (item.Value.packets [lastPacketIndex].Data [0].ToString ());
+				cube.transform.localScale = new Vector3 (tempVal, tempVal, tempVal);
 			}
-	    }
+		}
+			
 
 		foreach( KeyValuePair<string, ClientLog> item in clients )
 		{
-			// If we have received at least one packet,
-			// show the last received from the log in the Debug console
+			// If we have sent at least one message,
+			// show the last sent message from the log in the Debug console
 			if(item.Value.log.Count > 0) 
 			{
-				int lastPacketIndex = item.Value.messages.Count- 1;
+				int lastMessageIndex = item.Value.messages.Count- 1;
 				
 				UnityEngine.Debug.Log(String.Format("CLIENT: {0} ADDRESS: {1} VALUE 0: {2}", 
 				                                    item.Key, // Server name
-				                                    item.Value.messages[lastPacketIndex].Address, // OSC address
-				                                    item.Value.messages[lastPacketIndex].Data[0].ToString())); //First data value
+				                                    item.Value.messages[lastMessageIndex].Address, // OSC address
+				                                    item.Value.messages[lastMessageIndex].Data[0].ToString())); //First data value
+				                                    
 			}
+
 		}
 	}
 }

@@ -1,1 +1,3 @@
 Library/
+*.csproj
+*.sln
