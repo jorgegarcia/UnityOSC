@@ -5,9 +5,9 @@ Open Sound Control classes and API for the Unity 3d game engine
 Based on Bespoke Open Sound Control Library by Paul Varcholik (pvarchol@bespokesoftware.org).
 Licensed under MIT license.
 
-#How to use
+##How to use
 
-Copy the src/ folder contents to the corresponding Assets/ and Editor/ folders of your Unity project.
+Copy the src/Editor folder contents to the corresponding Editor/ folder of your Unity project. The rest can go to your e.g. Assets/ folder of the same project.
 
 ## Documentation and examples of usage
 
