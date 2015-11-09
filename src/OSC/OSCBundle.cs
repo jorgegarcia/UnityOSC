@@ -86,7 +86,7 @@ namespace UnityOSC
 		/// <returns>
 		/// A <see cref="OSCBundle"/>
 		/// </returns>
-		public static OSCBundle Unpack(byte[] data, ref int start, int end)
+		public new static OSCBundle Unpack(byte[] data, ref int start, int end)
 		{
 			string address = OSCPacket.UnpackValue<string>(data, ref start);
 			Trace.Assert(address == BUNDLE);
