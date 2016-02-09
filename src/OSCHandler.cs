@@ -271,6 +271,20 @@ public class OSCHandler : MonoBehaviour
 		}
 	}
 	
+	public void SendBundleToClient( string clientId, OSCBundle bundle)
+	{
+		if (_clients.ContainsKey (clientId))
+		{
+			// TODO: logs
+
+			_clients [clientId].client.Send (bundle);
+		}
+		else
+		{
+			Debug.LogError(string.Format("Can't send OSC bundle to {0}. Client doesn't exist.", clientId));
+		}
+	}
+	
 	/// <summary>
 	/// Updates clients and servers logs.
 	/// </summary>

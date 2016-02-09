@@ -37,12 +37,19 @@ namespace UnityOSC
 		public OSCBundle()
 		{
 			_address = BUNDLE;
+			_timeStamp = Now;
 		}
 		
 		public OSCBundle(long timestamp)
 		{
 			_address = BUNDLE;
 			_timeStamp = timestamp;
+		}
+
+		public OSCBundle(DateTime time)
+		{
+			_address = BUNDLE;
+			_timeStamp = DateTimeToNtpTimeStamp (time);
 		}
 		#endregion
 		
@@ -52,6 +59,13 @@ namespace UnityOSC
 		#endregion
 		
 		#region Properties
+		public static long Now
+		{
+			get
+			{
+				return DateTimeToNtpTimeStamp(DateTime.Now);
+			}
+		}
 		#endregion
 	
 		#region Methods
@@ -66,9 +80,22 @@ namespace UnityOSC
 		/// </summary>
 		override public void Pack()
 		{
-			// TODO: Pack bundle with timestamp in NTP format
-			
-			throw new NotImplementedException("OSCBundle.Pack() : Not implemented method.");
+			List<byte> data = new List<byte>();
+
+			data.AddRange (OSCPacket.PackValue(BUNDLE));
+			PadNull (data);
+
+			data.AddRange (OSCPacket.PackValue<Int64>(_timeStamp));
+
+			foreach (object value in _data)
+			{
+				Trace.Assert(value is OSCMessage);
+				OSCMessage msg = (OSCMessage) value;
+
+				data.AddRange (OSCPacket.PackValue(msg.BinaryData));
+			}
+				
+			this._binaryData = data.ToArray ();
 		}
 
 		/// <summary>
@@ -114,6 +141,17 @@ namespace UnityOSC
 		{
 			Trace.Assert(msgvalue is OSCMessage);
 			_data.Add(msgvalue);
+		}
+		
+		public static long DateTimeToNtpTimeStamp(DateTime t)
+		{
+			DateTime dateTime1900 = new DateTime (1900, 1, 1, 0, 0, 0);
+			TimeSpan dt = t - dateTime1900;
+
+			long seconds  = (long) Math.Floor(dt.TotalSeconds);
+			long fraction = ((dt.Milliseconds % 1000) * 0x100000000L) / 1000;
+
+			return ( (seconds << 32) | fraction);
 		}
 		#endregion			
 	}
