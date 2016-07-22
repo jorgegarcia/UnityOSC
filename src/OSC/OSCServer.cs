@@ -52,6 +52,7 @@ namespace UnityOSC
 		private int _localPort;
 		private Thread _receiverThread;
 		private OSCPacket _lastReceivedPacket;
+		private int _sleepMilliseconds = 10;
 		#endregion
 		
 		#region Properties
@@ -84,6 +85,22 @@ namespace UnityOSC
 			get
 			{
 				return _lastReceivedPacket;
+			}
+		}
+
+		/// <summary>
+		/// "Osc Receive Loop" sleep duration per message.
+		/// </summary>
+		/// <value>The sleep milliseconds.</value>
+		public int SleepMilliseconds
+		{
+			get
+			{
+				return _sleepMilliseconds;
+			}
+			set
+			{
+				_sleepMilliseconds = value;
 			}
 		}
 		#endregion
@@ -155,7 +172,8 @@ namespace UnityOSC
 			while( true )
 			{
 				Receive();
-                Thread.Sleep(10);
+				
+				Thread.Sleep(_sleepMilliseconds);
 			}
 		}
 		#endregion
