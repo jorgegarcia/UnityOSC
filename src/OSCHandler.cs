@@ -278,6 +278,9 @@ public class OSCHandler : MonoBehaviour
 	{
 		foreach(KeyValuePair<string,ServerLog> pair in _servers)
 		{
+			_servers [pair.Key].log.Clear ();
+			_servers [pair.Key].packets.Clear ();  // HACK to clear logs every time UpdateLogs is called (DSJ - TODO)
+
 			if(_servers[pair.Key].server.LastReceivedPacket != null)
 			{
 				//Initialization for the first packet received
@@ -289,6 +292,8 @@ public class OSCHandler : MonoBehaviour
 					                                         FormatMilliseconds(DateTime.Now.Millisecond)," : ",
 					                                         _servers[pair.Key].server.LastReceivedPacket.Address," ",
 					                                         DataToString(_servers[pair.Key].server.LastReceivedPacket.Data)));
+
+					_servers[pair.Key].server.LastReceivedPacket = null;  // HACK to clear logs every time UpdateLogs is called (DSJ - TODO)
 					break;
 				}
 						
@@ -308,6 +313,8 @@ public class OSCHandler : MonoBehaviour
 					                                         _servers[pair.Key].server.LastReceivedPacket.Address," ",
 					                                         DataToString(_servers[pair.Key].server.LastReceivedPacket.Data)));
 				}
+				UnityEngine.Debug.Log ("Reseting Packets");
+				_servers[pair.Key].server.LastReceivedPacket = null;  // HACK to clear logs every time UpdateLogs is called (DSJ - TODO)
 			}
 		}
 	}
