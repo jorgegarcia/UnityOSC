@@ -86,6 +86,9 @@ namespace UnityOSC
 			{
 				return _lastReceivedPacket;
 			}
+			set{
+				_lastReceivedPacket = value;
+			}
 		}
 
 		/// <summary>
