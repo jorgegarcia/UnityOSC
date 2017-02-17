@@ -14,6 +14,12 @@ namespace UnityOSC{
 		private IEnumerator messageLoop;
 		private float messageWait = .0333f;
 
+
+		// <summary>
+		// A Simple OSC Server for recieving and processing OSC messages.
+		// </summary>
+		// <param name=name> A name for the OSC Server </param>
+		// <param name=port> The Port number for the OSC Server </param>
 		public SimpleOSCReceiver(string name, int port){
 			oscHandler = OSCHandler.Instance;
 			oscHandler.CreateServer (name, port);
@@ -22,6 +28,16 @@ namespace UnityOSC{
 			messageLoop = MessageLoop ();
 		}
 
+
+		// <summary>
+		// Used to register callback methods for routing incoming messages based on the OSC Address.
+		// Does not currently support full RegEx pattern matching.  Only checks for exact OSC Addresses.
+		// </summary>
+		// <param name=oscAddress> The OSC Address being routed  </param>
+		// <param name=function> 
+		// The callback function to route the OSC Message with the given address.
+		// The function must take an OSCMessage as an argument.
+		// </param>
 		public void OnMessageReceived(string oscAddress, OscCallback function)
 		{
 			callbacks.Add (oscAddress, function);

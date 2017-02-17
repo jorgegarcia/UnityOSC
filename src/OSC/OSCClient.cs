@@ -103,9 +103,9 @@ namespace UnityOSC
 			{
 				_udpClient.Send(data, data.Length);
 			}
-			catch
-			{
-				throw new Exception(String.Format("Can't send OSC packet to client {0} : {1}", _ipAddress, _port));
+			catch (Exception e)
+			{	
+				throw new Exception(String.Format("Can't send OSC packet to client {0} : {1}\nError: {2}", _ipAddress, _port, e));
 			}
 		}
 		#endregion
