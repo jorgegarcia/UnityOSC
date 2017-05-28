@@ -26,7 +26,7 @@ using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// Helper to monitor incoming at outgoing OSC messages from the Unity Editor.
+/// Helper to monitor incoming and outgoing OSC messages from the Unity Editor.
 /// You should have this script placed at the /Editor folder.
 /// Show the panel helper by selecting "Window->OSC Helper" from the Unity menu.
 /// </summary>
