@@ -82,23 +82,30 @@ public class OSCHandler : MonoBehaviour
 	private static OSCHandler _instance = null;
 	private Dictionary<string, ClientLog> _clients = new Dictionary<string, ClientLog>();
 	private Dictionary<string, ServerLog> _servers = new Dictionary<string, ServerLog>();
-    private oscControl oscCtrl;
+    public List<OSCPacket> packets = new List<OSCPacket>();
+
 	
-	private const int _loglength = 25;
+	private const int _loglength = 100;
 	#endregion
 	
 	/// <summary>
 	/// Initializes the OSC Handler.
 	/// Here you can create the OSC servers and clientes.
 	/// </summary>
-	public void Init(oscControl oscCtrlIn)
+	public void Init()
 	{
-        // Assigns control to the handler in order to fill a list with incoming messages
-        oscCtrl = oscCtrlIn;
-	}
-	
-	#region Properties
-	public Dictionary<string, ClientLog> Clients
+        //Initialize OSC clients (transmitters)
+        //Example:		
+        //CreateClient("SuperCollider", IPAddress.Parse("127.0.0.1"), 5555);
+
+        //Initialize OSC servers (listeners)
+        //Example:
+
+        //CreateServer("AndroidPhone", 6666);
+    }
+
+    #region Properties
+    public Dictionary<string, ClientLog> Clients
 	{
 		get
 		{
@@ -198,7 +205,16 @@ public class OSCHandler : MonoBehaviour
     /// Callback when a message is received. It stores the messages in a list of the oscControl
     void OnPacketReceived(OSCServer server, OSCPacket packet)
     {
-        oscCtrl.addToBuffer(server, packet);
+        // Remember origin
+        packet.server = server;
+
+        // Limit buffer
+        if (packets.Count > _loglength)
+        {
+            packets.RemoveRange(0, packets.Count - _loglength);
+        }
+        // Add to OSCPackets list
+        packets.Add(packet);
     }
 	
 	/// <summary>
