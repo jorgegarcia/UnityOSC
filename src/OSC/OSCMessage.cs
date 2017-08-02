@@ -2,6 +2,7 @@
 //	  UnityOSC - Open Sound Control interface for the Unity3d game engine
 //
 //	  Copyright (c) 2012 Jorge Garcia Martin
+//	  Last edit: Gerard Llorach 2nd August 2017
 //
 // 	  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // 	  documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -105,7 +106,7 @@ namespace UnityOSC
 		/// <returns>
 		/// A <see cref="OSCMessage"/>
 		/// </returns>
-		public new static OSCMessage Unpack(byte[] data, ref int start)
+		public static OSCMessage Unpack(byte[] data, ref int start)
 		{
 			string address = OSCPacket.UnpackValue<string>(data, ref start);
 			OSCMessage message = new OSCMessage(address);

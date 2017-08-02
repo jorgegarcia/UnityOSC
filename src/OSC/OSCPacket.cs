@@ -2,6 +2,7 @@
 //	  UnityOSC - Open Sound Control interface for the Unity3d game engine
 //
 //	  Copyright (c) 2012 Jorge Garcia Martin
+//	  Last edit: Gerard Llorach 2nd August 2017
 //
 // 	  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // 	  documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -35,6 +36,7 @@ namespace UnityOSC
 		protected byte[] _binaryData;
 		protected string _address;
 		protected long _timeStamp;
+        public OSCServer server;
 		#endregion
 		
 		#region Properties
