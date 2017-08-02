@@ -30,7 +30,6 @@ using UnityOSC;
 public class oscControl : MonoBehaviour {
 
     private OSCServer myServer;
-    private List<OSCPacket> packets = new List<OSCPacket>();
 
     public string outIP = "127.0.0.1";
     public int outPort = 9999;
@@ -40,8 +39,8 @@ public class oscControl : MonoBehaviour {
 
     // Script initialization
     void Start() {
-        // init OSC. The OSCHandler has a callback that stores the messages in the list "packets" of this class when a message is received.
-        OSCHandler.Instance.Init(this); 
+        // init OSC
+        OSCHandler.Instance.Init(); 
 
         // Initialize OSC clients (transmitters)
         OSCHandler.Instance.CreateClient("myClient", IPAddress.Parse(outIP), outPort);
@@ -57,11 +56,13 @@ public class oscControl : MonoBehaviour {
 
 	// Reads all the messages received between the previous update and this one
 	void Update() {
-		
+
         // Read received messages
-        for (var i = 0; i<packets.Count; i++) {
-            processOSC(packets[i]);
-            packets.Remove(packets[i]);
+        for (var i = 0; i< OSCHandler.Instance.packets.Count; i++) {
+            // Process OSC
+            receivedOSC(OSCHandler.Instance.packets[i]);
+            // Remove them once they have been read.
+            OSCHandler.Instance.packets.Remove(OSCHandler.Instance.packets[i]);
             i--;
         }
 
@@ -71,25 +72,12 @@ public class oscControl : MonoBehaviour {
 
     }
 
-    // Add to buffer
-    public void addToBuffer(OSCServer serv, OSCPacket pckt) {
-
-        // Remember origin
-        pckt.server = serv;
-
-        // Limit buffer
-        if (packets.Count > bufferSize) {
-            packets.RemoveRange(0, packets.Count - bufferSize);
-        }
-        // Add to OSCPackets list
-        packets.Add(pckt);
-    }
 
 
     // Process OSC message
-    private void processOSC(OSCPacket pckt)
+    private void receivedOSC(OSCPacket pckt)
     {
-        if (pckt == null) { Debug.Log("Empty packet in processOSC"); return; }
+        if (pckt == null) { Debug.Log("Empty packet"); return; }
 
         // Origin
         int serverPort = pckt.server.ServerPort;
