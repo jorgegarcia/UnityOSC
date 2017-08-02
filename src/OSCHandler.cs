@@ -2,6 +2,7 @@
 //	  UnityOSC - Open Sound Control interface for the Unity3d game engine	  
 //
 //	  Copyright (c) 2012 Jorge Garcia Martin
+//	  Last edit: Gerard Llorach 2nd August 2017
 //
 // 	  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // 	  documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -81,6 +82,7 @@ public class OSCHandler : MonoBehaviour
 	private static OSCHandler _instance = null;
 	private Dictionary<string, ClientLog> _clients = new Dictionary<string, ClientLog>();
 	private Dictionary<string, ServerLog> _servers = new Dictionary<string, ServerLog>();
+    private oscControl oscCtrl;
 	
 	private const int _loglength = 25;
 	#endregion
@@ -89,16 +91,10 @@ public class OSCHandler : MonoBehaviour
 	/// Initializes the OSC Handler.
 	/// Here you can create the OSC servers and clientes.
 	/// </summary>
-	public void Init()
+	public void Init(oscControl oscCtrlIn)
 	{
-        //Initialize OSC clients (transmitters)
-        //Example:		
-        //CreateClient("SuperCollider", IPAddress.Parse("127.0.0.1"), 5555);
-
-        //Initialize OSC servers (listeners)
-        //Example:
-
-        //CreateServer("AndroidPhone", 6666);
+        // Assigns control to the handler in order to fill a list with incoming messages
+        oscCtrl = oscCtrlIn;
 	}
 	
 	#region Properties
@@ -183,7 +179,7 @@ public class OSCHandler : MonoBehaviour
 	/// <param name="port">
 	/// A <see cref="System.Int32"/>
 	/// </param>
-	public void CreateServer(string serverId, int port)
+	public OSCServer CreateServer(string serverId, int port)
 	{
         OSCServer server = new OSCServer(port);
         server.PacketReceivedEvent += OnPacketReceived;
@@ -194,10 +190,15 @@ public class OSCHandler : MonoBehaviour
 		serveritem.packets = new List<OSCPacket>();
 		
 		_servers.Add(serverId, serveritem);
+
+        return server;
 	}
 
+    /// <summary>
+    /// Callback when a message is received. It stores the messages in a list of the oscControl
     void OnPacketReceived(OSCServer server, OSCPacket packet)
     {
+        oscCtrl.addToBuffer(server, packet);
     }
 	
 	/// <summary>
@@ -273,6 +274,7 @@ public class OSCHandler : MonoBehaviour
 	
 	/// <summary>
 	/// Updates clients and servers logs.
+    /// NOTE: Only used by the editor helper script (OSCHelper.cs), could be removed
 	/// </summary>
 	public void UpdateLogs()
 	{
