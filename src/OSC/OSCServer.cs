@@ -2,6 +2,7 @@
 //	  UnityOSC - Open Sound Control interface for the Unity3d game engine
 //
 //	  Copyright (c) 2012 Jorge Garcia Martin
+//	  Last edit: Gerard Llorach 2nd August 2017
 //
 // 	  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // 	  documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -53,6 +54,7 @@ namespace UnityOSC
 		private Thread _receiverThread;
 		private OSCPacket _lastReceivedPacket;
 		private int _sleepMilliseconds = 10;
+        private int _bufferSize = 1024;
 		#endregion
 		
 		#region Properties
@@ -88,6 +90,14 @@ namespace UnityOSC
 			}
 		}
 
+        public int ServerPort
+        {
+            get
+            {
+                return _localPort;
+            }
+        }
+
 		/// <summary>
 		/// "Osc Receive Loop" sleep duration per message.
 		/// </summary>
@@ -103,21 +113,39 @@ namespace UnityOSC
 				_sleepMilliseconds = value;
 			}
 		}
-		#endregion
-	
-		#region Methods
-		
-		/// <summary>
-		/// Opens the server at the given port and starts the listener thread.
+
+
+        /// <summary>
+		/// Buffer size of the server.
 		/// </summary>
-		public void Connect()
+		/// <value> Number of bytes to store in the buffer.</value>
+		public int ReceiveBufferSize
+        {
+            get
+            {
+                return _udpClient.Client.ReceiveBufferSize;
+            }
+            set
+            {
+                _udpClient.Client.ReceiveBufferSize = _bufferSize = value;
+            }
+        }
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Opens the server at the given port and starts the listener thread.
+        /// </summary>
+        public void Connect()
 		{
 			if(this._udpClient != null) Close();
 			
 			try
 			{
 				_udpClient = new UdpClient(_localPort);
-				_receiverThread = new Thread(new ThreadStart(this.ReceivePool));
+                _udpClient.Client.ReceiveBufferSize = _bufferSize;
+                _receiverThread = new Thread(new ThreadStart(this.ReceivePool));
 				_receiverThread.Start();
 			}
 			catch(Exception e)
@@ -173,7 +201,8 @@ namespace UnityOSC
 			{
 				Receive();
 				
-				Thread.Sleep(_sleepMilliseconds);
+                if (_udpClient.Available == 0)
+				    Thread.Sleep(_sleepMilliseconds);
 			}
 		}
 		#endregion

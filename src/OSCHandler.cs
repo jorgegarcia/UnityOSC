@@ -2,6 +2,7 @@
 //	  UnityOSC - Open Sound Control interface for the Unity3d game engine	  
 //
 //	  Copyright (c) 2012 Jorge Garcia Martin
+//	  Last edit: Gerard Llorach 2nd August 2017
 //
 // 	  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // 	  documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -81,8 +82,10 @@ public class OSCHandler : MonoBehaviour
 	private static OSCHandler _instance = null;
 	private Dictionary<string, ClientLog> _clients = new Dictionary<string, ClientLog>();
 	private Dictionary<string, ServerLog> _servers = new Dictionary<string, ServerLog>();
+    public List<OSCPacket> packets = new List<OSCPacket>();
+
 	
-	private const int _loglength = 25;
+	private const int _loglength = 100;
 	#endregion
 	
 	/// <summary>
@@ -99,10 +102,10 @@ public class OSCHandler : MonoBehaviour
         //Example:
 
         //CreateServer("AndroidPhone", 6666);
-	}
-	
-	#region Properties
-	public Dictionary<string, ClientLog> Clients
+    }
+
+    #region Properties
+    public Dictionary<string, ClientLog> Clients
 	{
 		get
 		{
@@ -183,7 +186,7 @@ public class OSCHandler : MonoBehaviour
 	/// <param name="port">
 	/// A <see cref="System.Int32"/>
 	/// </param>
-	public void CreateServer(string serverId, int port)
+	public OSCServer CreateServer(string serverId, int port)
 	{
         OSCServer server = new OSCServer(port);
         server.PacketReceivedEvent += OnPacketReceived;
@@ -194,10 +197,24 @@ public class OSCHandler : MonoBehaviour
 		serveritem.packets = new List<OSCPacket>();
 		
 		_servers.Add(serverId, serveritem);
+
+        return server;
 	}
 
+    /// <summary>
+    /// Callback when a message is received. It stores the messages in a list of the oscControl
     void OnPacketReceived(OSCServer server, OSCPacket packet)
     {
+        // Remember origin
+        packet.server = server;
+
+        // Limit buffer
+        if (packets.Count > _loglength)
+        {
+            packets.RemoveRange(0, packets.Count - _loglength);
+        }
+        // Add to OSCPackets list
+        packets.Add(packet);
     }
 	
 	/// <summary>
@@ -273,6 +290,7 @@ public class OSCHandler : MonoBehaviour
 	
 	/// <summary>
 	/// Updates clients and servers logs.
+    /// NOTE: Only used by the editor helper script (OSCHelper.cs), could be removed
 	/// </summary>
 	public void UpdateLogs()
 	{
