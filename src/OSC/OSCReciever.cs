@@ -41,10 +41,11 @@ public class OSCReciever
             if (packet.IsBundle())
             {
                 var bundle = packet as OSCBundle;
-                if (0 < bundle.Data.Count)
+                
+                foreach(object obj in bundle.Data)
                 {
-                    var m = bundle.Data[0] as OSCMessage;
-                    _queue.Enqueue(m);
+                    OSCMessage msg = obj as OSCMessage;
+                    _queue.Enqueue(msg);
                 }
             }
             else
