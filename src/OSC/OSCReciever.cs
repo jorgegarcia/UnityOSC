@@ -26,6 +26,7 @@ public class OSCReciever
         _server.SleepMilliseconds = 0;
         _server.PacketReceivedEvent += didRecievedEvent;
     }
+    
     public void Close()
     {
         if (_server != null)
@@ -34,6 +35,7 @@ public class OSCReciever
             _server = null;
         }
     }
+    
     void didRecievedEvent(OSCServer sender, OSCPacket packet)
     {
         lock (_queue)
@@ -54,6 +56,7 @@ public class OSCReciever
             }
         }
     }
+    
     public bool hasWaitingMessages()
     {
         lock (_queue)
@@ -61,6 +64,7 @@ public class OSCReciever
             return 0 < _queue.Count;
         }
     }
+    
     public OSCMessage getNextMessage()
     {
         lock (_queue)
