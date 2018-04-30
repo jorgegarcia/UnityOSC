@@ -17,15 +17,10 @@ public class SimpleReceiverExample : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		// Debug.Log("before receive");
 		if(reciever.hasWaitingMessages()){
 			OSCMessage msg = reciever.getNextMessage();
-			Debug.Log("msg received");
-			Debug.Log(msg.Address);
-			// Debug.Log(msg.Data.Count);
-			Debug.Log(DataToString(msg.Data));
+			Debug.Log(string.Format("message received: {0} {1}", msg.Address, DataToString(msg.Data)));
 		}
-		// Debug.Log("after receive");
 	}
 	
 	private string DataToString(List<object> data)
