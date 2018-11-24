@@ -157,6 +157,9 @@ public class OSCHandler : MonoBehaviour
 	/// </param>
 	public void CreateClient(string clientId, IPAddress destination, int port)
 	{
+		if (_clients.ContainsKey(clientId)) {
+			return;
+		}
 		ClientLog clientitem = new ClientLog();
 		clientitem.client = new OSCClient(destination, port);
 		clientitem.log = new List<string>();
