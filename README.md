@@ -14,7 +14,7 @@ Licensed under MIT license.
 * [OscJack](https://github.com/keijiro/OscJack)
 
 
-## How to use
+## How to use UnityOSC
 
 ### Install 
 
