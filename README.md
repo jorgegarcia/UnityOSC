@@ -5,7 +5,7 @@ Open Sound Control classes and API for the Unity 3d game engine
 Based on Bespoke Open Sound Control Library by Paul Varcholik (pvarchol@bespokesoftware.org).
 Licensed under MIT license.
 
-***THIS REPOSITORY AND PROJECT IS NO LONGER SUPPORTED. After 10 years, I've decided not to continue with its development***
+***THIS REPOSITORY AND PROJECT IS NO LONGER SUPPORTED OR MAINTAINED. After 10 years, I've decided not to continue with its development***
 
 ***Please consider the following alternatives (more modern and better) for using OSC in Unity:***
 
